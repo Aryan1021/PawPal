@@ -11,13 +11,10 @@ void main() async {
 
   await Hive.initFlutter();
 
-  // Register the Pet adapter for Hive
   Hive.registerAdapter(PetAdapter());
 
-  // Open the 'pets' box
   final petBox = await Hive.openBox<Pet>('pets');
 
-  // Initialize datasources and repository
   final localDataSource = PetLocalDataSourceImpl();
   final petRepository = PetRepositoryImpl(localDataSource: localDataSource, petBox: petBox);
 

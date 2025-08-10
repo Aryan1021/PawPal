@@ -36,9 +36,7 @@ class _HomePageState extends State<HomePage> {
   void _onSearchChanged() {
     final query = _searchController.text.toLowerCase();
     setState(() {
-      _filteredPets = _allPets
-          .where((pet) => pet.name.toLowerCase().contains(query))
-          .toList();
+      _filteredPets = _allPets.where((pet) => pet.name.toLowerCase().contains(query)).toList();
     });
   }
 
