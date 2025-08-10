@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
     _searchController.addListener(_onSearchChanged);
   }
 
-  void _loadPets() async {
+  Future<void> _loadPets() async {
     final pets = await widget.petRepository.getAllPets();
     setState(() {
       _allPets = pets;
@@ -40,6 +40,10 @@ class _HomePageState extends State<HomePage> {
       _filteredPets =
           _allPets.where((pet) => pet.name.toLowerCase().contains(query)).toList();
     });
+  }
+
+  Future<void> _refreshPets() async {
+    await _loadPets();
   }
 
   @override
@@ -114,14 +118,23 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Expanded(
-            child: _filteredPets.isEmpty
-                ? Center(child: Text('No pets found'))
-                : ListView.builder(
-              itemCount: _filteredPets.length,
-              itemBuilder: (context, index) {
-                final pet = _filteredPets[index];
-                return _buildPetCard(pet);
-              },
+            child: RefreshIndicator(
+              onRefresh: _refreshPets,
+              child: _filteredPets.isEmpty
+                  ? ListView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                children: [Center(child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text('No pets found'),
+                ))],
+              )
+                  : ListView.builder(
+                itemCount: _filteredPets.length,
+                itemBuilder: (context, index) {
+                  final pet = _filteredPets[index];
+                  return _buildPetCard(pet);
+                },
+              ),
             ),
           ),
         ],
