@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
 import 'src/data/models/pet_model.dart';
 import 'src/data/datasources/pet_local_datasource.dart';
 import 'src/data/repositories/pet_repository.dart';
 import 'src/presentation/pages/home_page.dart';
+import 'src/presentation/pages/main_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,7 +40,7 @@ class PawPalApp extends StatelessWidget {
         primarySwatch: Colors.teal,
       ),
       themeMode: ThemeMode.system,
-      home: HomePage(petRepository: petRepository),
+      home: MainScreen(petRepository: petRepository),
     );
   }
 }
