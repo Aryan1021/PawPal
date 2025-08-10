@@ -30,6 +30,7 @@ class PawPalApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'PawPal',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.teal,
         brightness: Brightness.light,
