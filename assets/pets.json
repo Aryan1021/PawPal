@@ -1,0 +1,102 @@
+[
+  {
+    "id": "1",
+    "name": "Bella",
+    "type": "Dog",
+    "age": 2,
+    "price": 120.0,
+    "imageUrl": "https://placedog.net/500?id=1",
+    "isAdopted": false,
+    "isFavorite": false
+  },
+  {
+    "id": "2",
+    "name": "Luna",
+    "type": "Cat",
+    "age": 1,
+    "price": 90.0,
+    "imageUrl": "https://placekitten.com/500/500",
+    "isAdopted": false,
+    "isFavorite": false
+  },
+  {
+    "id": "3",
+    "name": "Charlie",
+    "type": "Dog",
+    "age": 3,
+    "price": 150.0,
+    "imageUrl": "https://placedog.net/500?id=3",
+    "isAdopted": false,
+    "isFavorite": false
+  },
+  {
+    "id": "4",
+    "name": "Lucy",
+    "type": "Cat",
+    "age": 2,
+    "price": 100.0,
+    "imageUrl": "https://placekitten.com/501/501",
+    "isAdopted": false,
+    "isFavorite": false
+  },
+  {
+    "id": "5",
+    "name": "Max",
+    "type": "Dog",
+    "age": 4,
+    "price": 200.0,
+    "imageUrl": "https://placedog.net/500?id=5",
+    "isAdopted": false,
+    "isFavorite": false
+  },
+  {
+    "id": "6",
+    "name": "Milo",
+    "type": "Cat",
+    "age": 3,
+    "price": 110.0,
+    "imageUrl": "https://placekitten.com/502/502",
+    "isAdopted": false,
+    "isFavorite": false
+  },
+  {
+    "id": "7",
+    "name": "Daisy",
+    "type": "Dog",
+    "age": 1,
+    "price": 140.0,
+    "imageUrl": "https://placedog.net/500?id=7",
+    "isAdopted": false,
+    "isFavorite": false
+  },
+  {
+    "id": "8",
+    "name": "Simba",
+    "type": "Cat",
+    "age": 2,
+    "price": 95.0,
+    "imageUrl": "https://placekitten.com/503/503",
+    "isAdopted": false,
+    "isFavorite": false
+  },
+  {
+    "id": "9",
+    "name": "Rocky",
+    "type": "Dog",
+    "age": 5,
+    "price": 180.0,
+    "imageUrl": "https://placedog.net/500?id=9",
+    "isAdopted": false,
+    "isFavorite": false
+  },
+  {
+    "id": "10",
+    "name": "Cleo",
+    "type": "Cat",
+    "age": 4,
+    "price": 105.0,
+    "imageUrl": "https://placekitten.com/504/504",
+    "isAdopted": false,
+    "isFavorite": false
+  }
+]
