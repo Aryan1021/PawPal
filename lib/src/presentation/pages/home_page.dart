@@ -37,9 +37,8 @@ class _HomePageState extends State<HomePage> {
   void _onSearchChanged() {
     final query = _searchController.text.toLowerCase();
     setState(() {
-      _filteredPets = _allPets
-          .where((pet) => pet.name.toLowerCase().contains(query))
-          .toList();
+      _filteredPets =
+          _allPets.where((pet) => pet.name.toLowerCase().contains(query)).toList();
     });
   }
 
@@ -66,9 +65,18 @@ class _HomePageState extends State<HomePage> {
         title: Text(pet.name),
         subtitle:
         Text('${pet.type} • ${pet.age} yrs • \$${pet.price.toStringAsFixed(2)}'),
-        trailing: pet.isAdopted
-            ? Text('Adopted', style: TextStyle(color: Colors.red))
-            : null,
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (pet.isAdopted)
+              Text('Adopted', style: TextStyle(color: Colors.red)),
+            const SizedBox(width: 8),
+            Icon(
+              pet.isFavorite ? Icons.favorite : Icons.favorite_border,
+              color: pet.isFavorite ? Colors.red : null,
+            ),
+          ],
+        ),
         onTap: () {
           Navigator.push(
             context,
@@ -76,7 +84,7 @@ class _HomePageState extends State<HomePage> {
               builder: (_) =>
                   DetailsPage(pet: pet, petRepository: widget.petRepository),
             ),
-          ).then((_) => _loadPets()); // Refresh list after returning
+          ).then((_) => _loadPets());
         },
       ),
     );

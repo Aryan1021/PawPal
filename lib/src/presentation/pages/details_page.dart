@@ -46,7 +46,7 @@ class _DetailsPageState extends State<DetailsPage> {
   }
 
   Future<void> _adoptPet() async {
-    if (pet.isAdopted) return; // prevent re-adopt
+    if (pet.isAdopted) return;
 
     setState(() {
       _isAdopting = true;
@@ -108,14 +108,38 @@ class _DetailsPageState extends State<DetailsPage> {
                 const SizedBox(height: 8),
                 Text('${pet.type} • ${pet.age} years old'),
                 const SizedBox(height: 8),
-                Text('\$${pet.price.toStringAsFixed(2)}', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                Text('\$${pet.price.toStringAsFixed(2)}',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 24),
                 ElevatedButton(
                   onPressed: adopted || _isAdopting ? null : _adoptPet,
-                  child: _isAdopting ? CircularProgressIndicator(color: Colors.white) : Text(adopted ? 'Already Adopted' : 'Adopt Me'),
+                  child: _isAdopting
+                      ? CircularProgressIndicator(color: Colors.white)
+                      : Text(adopted ? 'Already Adopted' : 'Adopt Me'),
                   style: ElevatedButton.styleFrom(
                     minimumSize: Size(double.infinity, 48),
                   ),
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      icon: Icon(
+                        pet.isFavorite ? Icons.favorite : Icons.favorite_border,
+                        color: pet.isFavorite ? Colors.red : null,
+                        size: 32,
+                      ),
+                      onPressed: () async {
+                        setState(() {
+                          pet.isFavorite = !pet.isFavorite;
+                        });
+                        await widget.petRepository.updatePet(pet);
+                      },
+                    ),
+                    const SizedBox(width: 8),
+                    Text(pet.isFavorite ? 'Favorited' : 'Mark as Favorite'),
+                  ],
                 ),
               ],
             ),
