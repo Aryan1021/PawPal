@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../data/models/pet_model.dart';
 import '../../data/repositories/pet_repository.dart';
+import 'details_page.dart';
 
 class HomePage extends StatefulWidget {
   final PetRepository petRepository;
@@ -36,7 +37,9 @@ class _HomePageState extends State<HomePage> {
   void _onSearchChanged() {
     final query = _searchController.text.toLowerCase();
     setState(() {
-      _filteredPets = _allPets.where((pet) => pet.name.toLowerCase().contains(query)).toList();
+      _filteredPets = _allPets
+          .where((pet) => pet.name.toLowerCase().contains(query))
+          .toList();
     });
   }
 
@@ -50,18 +53,30 @@ class _HomePageState extends State<HomePage> {
     return Card(
       color: pet.isAdopted ? Colors.grey.shade300 : null,
       child: ListTile(
-        leading: Image.network(
-          pet.imageUrl,
-          width: 60,
-          height: 60,
-          fit: BoxFit.cover,
-          errorBuilder: (_, __, ___) => Icon(Icons.pets),
+        leading: Hero(
+          tag: pet.id,
+          child: Image.network(
+            pet.imageUrl,
+            width: 60,
+            height: 60,
+            fit: BoxFit.cover,
+            errorBuilder: (_, __, ___) => Icon(Icons.pets),
+          ),
         ),
         title: Text(pet.name),
-        subtitle: Text('${pet.type} • ${pet.age} yrs • \$${pet.price.toStringAsFixed(2)}'),
-        trailing: pet.isAdopted ? Text('Adopted', style: TextStyle(color: Colors.red)) : null,
+        subtitle:
+        Text('${pet.type} • ${pet.age} yrs • \$${pet.price.toStringAsFixed(2)}'),
+        trailing: pet.isAdopted
+            ? Text('Adopted', style: TextStyle(color: Colors.red))
+            : null,
         onTap: () {
-          // TODO: Navigate to details page
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) =>
+                  DetailsPage(pet: pet, petRepository: widget.petRepository),
+            ),
+          ).then((_) => _loadPets()); // Refresh list after returning
         },
       ),
     );
