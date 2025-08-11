@@ -37,8 +37,9 @@ class _HomePageState extends State<HomePage> {
   void _onSearchChanged() {
     final query = _searchController.text.toLowerCase();
     setState(() {
-      _filteredPets =
-          _allPets.where((pet) => pet.name.toLowerCase().contains(query)).toList();
+      _filteredPets = _allPets
+          .where((pet) => pet.name.toLowerCase().contains(query))
+          .toList();
     });
   }
 
@@ -63,17 +64,21 @@ class _HomePageState extends State<HomePage> {
             width: 60,
             height: 60,
             fit: BoxFit.cover,
-            errorBuilder: (_, __, ___) => Icon(Icons.pets),
+            errorBuilder: (_, __, ___) => const Icon(Icons.pets),
           ),
         ),
         title: Text(pet.name),
-        subtitle:
-        Text('${pet.type} • ${pet.age} yrs • \$${pet.price.toStringAsFixed(2)}'),
+        subtitle: Text(
+          '${pet.type} • ${pet.age} yrs • \$${pet.price.toStringAsFixed(2)}',
+        ),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             if (pet.isAdopted)
-              Text('Adopted', style: TextStyle(color: Colors.red)),
+              const Text(
+                'Adopted',
+                style: TextStyle(color: Colors.red),
+              ),
             const SizedBox(width: 8),
             Icon(
               pet.isFavorite ? Icons.favorite : Icons.favorite_border,
@@ -85,8 +90,10 @@ class _HomePageState extends State<HomePage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) =>
-                  DetailsPage(pet: pet, petRepository: widget.petRepository),
+              builder: (_) => DetailsPage(
+                pet: pet,
+                petRepository: widget.petRepository,
+              ),
             ),
           ).then((_) => _loadPets());
         },
@@ -96,49 +103,50 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('PawPal - Adopt a Pet'),
-      ),
-      body: _isLoading
-          ? Center(child: CircularProgressIndicator())
-          : Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                labelText: 'Search pets by name',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: TextField(
+            controller: _searchController,
+            decoration: InputDecoration(
+              labelText: 'Search pets by name',
+              prefixIcon: const Icon(Icons.search),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          child: RefreshIndicator(
+            onRefresh: _refreshPets,
+            child: _filteredPets.isEmpty
+                ? ListView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              children: const [
+                Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text('No pets found'),
+                  ),
                 ),
-              ),
+              ],
+            )
+                : ListView.builder(
+              itemCount: _filteredPets.length,
+              itemBuilder: (context, index) {
+                final pet = _filteredPets[index];
+                return _buildPetCard(pet);
+              },
             ),
           ),
-          Expanded(
-            child: RefreshIndicator(
-              onRefresh: _refreshPets,
-              child: _filteredPets.isEmpty
-                  ? ListView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                children: [Center(child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text('No pets found'),
-                ))],
-              )
-                  : ListView.builder(
-                itemCount: _filteredPets.length,
-                itemBuilder: (context, index) {
-                  final pet = _filteredPets[index];
-                  return _buildPetCard(pet);
-                },
-              ),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

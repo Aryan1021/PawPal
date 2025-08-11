@@ -9,10 +9,14 @@ class DetailsPage extends StatefulWidget {
   final Pet pet;
   final PetRepository petRepository;
 
-  const DetailsPage({Key? key, required this.pet, required this.petRepository}) : super(key: key);
+  const DetailsPage({
+    Key? key,
+    required this.pet,
+    required this.petRepository,
+  }) : super(key: key);
 
   @override
-  _DetailsPageState createState() => _DetailsPageState();
+  State<DetailsPage> createState() => _DetailsPageState();
 }
 
 class _DetailsPageState extends State<DetailsPage> {
@@ -24,7 +28,9 @@ class _DetailsPageState extends State<DetailsPage> {
   void initState() {
     super.initState();
     pet = widget.pet;
-    _confettiController = ConfettiController(duration: const Duration(seconds: 2));
+    _confettiController = ConfettiController(
+      duration: const Duration(seconds: 2),
+    );
   }
 
   @override
@@ -34,40 +40,44 @@ class _DetailsPageState extends State<DetailsPage> {
   }
 
   void _showImageViewer() {
-    Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-      return Scaffold(
-        appBar: AppBar(title: Text(pet.name)),
-        body: PhotoView(
-          imageProvider: NetworkImage(pet.imageUrl),
-          backgroundDecoration: BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor),
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => Scaffold(
+          appBar: AppBar(title: Text(pet.name)),
+          body: PhotoView(
+            imageProvider: NetworkImage(pet.imageUrl),
+            backgroundDecoration: BoxDecoration(
+              color: Theme.of(context).scaffoldBackgroundColor,
+            ),
+          ),
         ),
-      );
-    }));
+      ),
+    );
   }
 
   Future<void> _adoptPet() async {
     if (pet.isAdopted) return;
 
-    setState(() {
-      _isAdopting = true;
-    });
+    setState(() => _isAdopting = true);
 
     pet.isAdopted = true;
     await widget.petRepository.updatePet(pet);
 
-    setState(() {
-      _isAdopting = false;
-    });
+    setState(() => _isAdopting = false);
 
     _confettiController.play();
 
+    if (!mounted) return;
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Adopted!'),
+        title: const Text('Adopted!'),
         content: Text('You’ve now adopted ${pet.name}.'),
         actions: [
-          TextButton(onPressed: () => Navigator.of(context).pop(), child: Text('OK')),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('OK'),
+          ),
         ],
       ),
     );
@@ -97,27 +107,39 @@ class _DetailsPageState extends State<DetailsPage> {
                         width: double.infinity,
                         fit: BoxFit.cover,
                         color: adopted ? Colors.grey : null,
-                        colorBlendMode: adopted ? BlendMode.saturation : null,
-                        errorBuilder: (_, __, ___) => Icon(Icons.pets, size: 100),
+                        colorBlendMode:
+                        adopted ? BlendMode.saturation : null,
+                        errorBuilder: (_, __, ___) =>
+                        const Icon(Icons.pets, size: 100),
                       ),
                     ),
                   ),
                 ),
                 const SizedBox(height: 16),
-                Text(pet.name, style: Theme.of(context).textTheme.headlineMedium),
+                Text(
+                  pet.name,
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
                 const SizedBox(height: 8),
                 Text('${pet.type} • ${pet.age} years old'),
                 const SizedBox(height: 8),
-                Text('\$${pet.price.toStringAsFixed(2)}',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                Text(
+                  '\$${pet.price.toStringAsFixed(2)}',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 const SizedBox(height: 24),
                 ElevatedButton(
                   onPressed: adopted || _isAdopting ? null : _adoptPet,
-                  child: _isAdopting
-                      ? CircularProgressIndicator(color: Colors.white)
-                      : Text(adopted ? 'Already Adopted' : 'Adopt Me'),
                   style: ElevatedButton.styleFrom(
-                    minimumSize: Size(double.infinity, 48),
+                    minimumSize: const Size(double.infinity, 48),
+                  ),
+                  child: _isAdopting
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : Text(
+                    adopted ? 'Already Adopted' : 'Adopt Me',
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -126,7 +148,9 @@ class _DetailsPageState extends State<DetailsPage> {
                   children: [
                     IconButton(
                       icon: Icon(
-                        pet.isFavorite ? Icons.favorite : Icons.favorite_border,
+                        pet.isFavorite
+                            ? Icons.favorite
+                            : Icons.favorite_border,
                         color: pet.isFavorite ? Colors.red : null,
                         size: 32,
                       ),
@@ -138,7 +162,11 @@ class _DetailsPageState extends State<DetailsPage> {
                       },
                     ),
                     const SizedBox(width: 8),
-                    Text(pet.isFavorite ? 'Favorited' : 'Mark as Favorite'),
+                    Text(
+                      pet.isFavorite
+                          ? 'Favorited'
+                          : 'Mark as Favorite',
+                    ),
                   ],
                 ),
               ],
@@ -150,7 +178,13 @@ class _DetailsPageState extends State<DetailsPage> {
               confettiController: _confettiController,
               blastDirectionality: BlastDirectionality.explosive,
               shouldLoop: false,
-              colors: const [Colors.green, Colors.blue, Colors.pink, Colors.orange, Colors.purple],
+              colors: const [
+                Colors.green,
+                Colors.blue,
+                Colors.pink,
+                Colors.orange,
+                Colors.purple,
+              ],
               numberOfParticles: 20,
               gravity: 0.3,
             ),

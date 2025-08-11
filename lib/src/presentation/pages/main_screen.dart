@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../data/repositories/pet_repository.dart';
 import 'home_page.dart';
 import 'favorites_page.dart';
@@ -19,6 +18,12 @@ class _MainScreenState extends State<MainScreen> {
 
   late final List<Widget> _pages;
 
+  final List<String> _titles = [
+    'PawPal - Adopt a Pet',
+    'Your Favorite Pets',
+    'Adoption History'
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -35,20 +40,19 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
-  final List<String> _titles = ['PawPal', 'Favorites', 'Adoption History'];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(_titles[_currentIndex]),
+        centerTitle: true,
       ),
       body: _pages[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: _onTap,
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.pets), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Favorites'),
           BottomNavigationBarItem(icon: Icon(Icons.history), label: 'History'),
         ],

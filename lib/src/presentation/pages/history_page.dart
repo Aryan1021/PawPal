@@ -25,7 +25,6 @@ class _HistoryPageState extends State<HistoryPage> {
 
   Future<void> _loadAdoptedPets() async {
     final pets = await widget.petRepository.getAdoptedPets();
-    // Optionally sort by some adoption time if you save timestamps (currently not saved)
     setState(() {
       _adoptedPets = pets;
       _isLoading = false;
@@ -42,18 +41,19 @@ class _HistoryPageState extends State<HistoryPage> {
             width: 60,
             height: 60,
             fit: BoxFit.cover,
-            errorBuilder: (_, __, ___) => Icon(Icons.pets),
+            errorBuilder: (_, __, ___) => const Icon(Icons.pets),
           ),
         ),
         title: Text(pet.name),
-        subtitle:
-        Text('${pet.type} • ${pet.age} yrs • \$${pet.price.toStringAsFixed(2)}'),
+        subtitle: Text('${pet.type} • ${pet.age} yrs • \$${pet.price.toStringAsFixed(2)}'),
         onTap: () {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) =>
-                  DetailsPage(pet: pet, petRepository: widget.petRepository),
+              builder: (_) => DetailsPage(
+                pet: pet,
+                petRepository: widget.petRepository,
+              ),
             ),
           ).then((_) => _loadAdoptedPets());
         },
@@ -63,18 +63,19 @@ class _HistoryPageState extends State<HistoryPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Adoption History')),
-      body: _isLoading
-          ? Center(child: CircularProgressIndicator())
-          : _adoptedPets.isEmpty
-          ? Center(child: Text('No adopted pets yet'))
-          : ListView.builder(
-        itemCount: _adoptedPets.length,
-        itemBuilder: (context, index) {
-          return _buildPetCard(_adoptedPets[index]);
-        },
-      ),
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (_adoptedPets.isEmpty) {
+      return const Center(child: Text('No adopted pets yet'));
+    }
+
+    return ListView.builder(
+      itemCount: _adoptedPets.length,
+      itemBuilder: (context, index) {
+        return _buildPetCard(_adoptedPets[index]);
+      },
     );
   }
 }

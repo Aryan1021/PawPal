@@ -42,21 +42,22 @@ class _FavoritesPageState extends State<FavoritesPage> {
             width: 60,
             height: 60,
             fit: BoxFit.cover,
-            errorBuilder: (_, __, ___) => Icon(Icons.pets),
+            errorBuilder: (_, __, ___) => const Icon(Icons.pets),
           ),
         ),
         title: Text(pet.name),
-        subtitle:
-        Text('${pet.type} • ${pet.age} yrs • \$${pet.price.toStringAsFixed(2)}'),
+        subtitle: Text('${pet.type} • ${pet.age} yrs • \$${pet.price.toStringAsFixed(2)}'),
         trailing: pet.isAdopted
-            ? Text('Adopted', style: TextStyle(color: Colors.red))
+            ? const Text('Adopted', style: TextStyle(color: Colors.red))
             : null,
         onTap: () {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) =>
-                  DetailsPage(pet: pet, petRepository: widget.petRepository),
+              builder: (_) => DetailsPage(
+                pet: pet,
+                petRepository: widget.petRepository,
+              ),
             ),
           ).then((_) => _loadFavoritePets());
         },
@@ -66,18 +67,19 @@ class _FavoritesPageState extends State<FavoritesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Favorites')),
-      body: _isLoading
-          ? Center(child: CircularProgressIndicator())
-          : _favoritePets.isEmpty
-          ? Center(child: Text('No favorite pets found'))
-          : ListView.builder(
-        itemCount: _favoritePets.length,
-        itemBuilder: (context, index) {
-          return _buildPetCard(_favoritePets[index]);
-        },
-      ),
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (_favoritePets.isEmpty) {
+      return const Center(child: Text('No favorite pets found'));
+    }
+
+    return ListView.builder(
+      itemCount: _favoritePets.length,
+      itemBuilder: (context, index) {
+        return _buildPetCard(_favoritePets[index]);
+      },
     );
   }
 }
