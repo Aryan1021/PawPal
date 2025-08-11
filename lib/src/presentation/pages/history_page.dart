@@ -175,45 +175,53 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                             ),
                           ],
                         ),
-                        title: Row(
+                        title: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Expanded(
-                              child: Text(
-                                pet.name,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                  color: Colors.black87,
-                                  letterSpacing: 0.5,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                              decoration: BoxDecoration(
-                                color: Colors.green.shade100,
-                                borderRadius: BorderRadius.circular(20),
-                                border: Border.all(color: Colors.green.shade300),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(
-                                    Icons.home,
-                                    size: 14,
-                                    color: Colors.green.shade700,
-                                  ),
-                                  const SizedBox(width: 4),
-                                  Text(
-                                    'Adopted',
-                                    style: TextStyle(
-                                      color: Colors.green.shade700,
+                            // Fixed: Use flexible layout for title and adopted badge
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    pet.name,
+                                    style: const TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 12,
+                                      fontSize: 20,
+                                      color: Colors.black87,
+                                      letterSpacing: 0.5,
                                     ),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                ],
-                              ),
+                                ),
+                                const SizedBox(width: 8),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                  decoration: BoxDecoration(
+                                    color: Colors.green.shade100,
+                                    borderRadius: BorderRadius.circular(15),
+                                    border: Border.all(color: Colors.green.shade300),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(
+                                        Icons.home,
+                                        size: 12,
+                                        color: Colors.green.shade700,
+                                      ),
+                                      const SizedBox(width: 4),
+                                      Text(
+                                        'Adopted',
+                                        style: TextStyle(
+                                          color: Colors.green.shade700,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 10,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
@@ -222,13 +230,16 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
+                              // Fixed: Use Wrap instead of Row to prevent overflow
+                              Wrap(
+                                spacing: 8,
+                                runSpacing: 8,
                                 children: [
                                   Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                     decoration: BoxDecoration(
                                       color: Colors.blue.shade100,
-                                      borderRadius: BorderRadius.circular(15),
+                                      borderRadius: BorderRadius.circular(12),
                                       border: Border.all(color: Colors.blue.shade200),
                                     ),
                                     child: Row(
@@ -236,27 +247,26 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                                       children: [
                                         Icon(
                                           Icons.pets,
-                                          size: 16,
+                                          size: 14,
                                           color: Colors.blue.shade700,
                                         ),
-                                        const SizedBox(width: 6),
+                                        const SizedBox(width: 4),
                                         Text(
                                           pet.type,
                                           style: TextStyle(
                                             color: Colors.blue.shade700,
                                             fontWeight: FontWeight.w600,
-                                            fontSize: 13,
+                                            fontSize: 12,
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
-                                  const SizedBox(width: 12),
                                   Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                     decoration: BoxDecoration(
                                       color: Colors.orange.shade100,
-                                      borderRadius: BorderRadius.circular(15),
+                                      borderRadius: BorderRadius.circular(12),
                                       border: Border.all(color: Colors.orange.shade200),
                                     ),
                                     child: Row(
@@ -264,16 +274,16 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                                       children: [
                                         Icon(
                                           Icons.cake,
-                                          size: 16,
+                                          size: 14,
                                           color: Colors.orange.shade700,
                                         ),
-                                        const SizedBox(width: 6),
+                                        const SizedBox(width: 4),
                                         Text(
                                           '${pet.age} yrs',
                                           style: TextStyle(
                                             color: Colors.orange.shade700,
                                             fontWeight: FontWeight.w600,
-                                            fontSize: 13,
+                                            fontSize: 12,
                                           ),
                                         ),
                                       ],
@@ -282,48 +292,62 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                                 ],
                               ),
                               const SizedBox(height: 12),
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [Colors.purple.shade100, Colors.blue.shade100],
-                                  ),
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(color: Colors.purple.shade200),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(
-                                      Icons.attach_money,
-                                      size: 18,
-                                      color: Colors.purple.shade700,
-                                    ),
-                                    Text(
-                                      '${pet.price.toStringAsFixed(2)} - Thank you for adopting!',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 14,
-                                        color: Colors.purple.shade700,
+                              // Fixed: Make price section flexible to prevent overflow
+                              Row(
+                                children: [
+                                  Flexible(
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          colors: [Colors.purple.shade100, Colors.blue.shade100],
+                                        ),
+                                        borderRadius: BorderRadius.circular(15),
+                                        border: Border.all(color: Colors.purple.shade200),
+                                      ),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Icon(
+                                            Icons.attach_money,
+                                            size: 16,
+                                            color: Colors.purple.shade700,
+                                          ),
+                                          const SizedBox(width: 4),
+                                          Flexible(
+                                            child: Text(
+                                              '\$${pet.price.toStringAsFixed(2)} - Thank you!',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 12,
+                                                color: Colors.purple.shade700,
+                                              ),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
                         ),
-                        trailing: Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: Colors.blue.shade100,
-                            shape: BoxShape.circle,
-                            border: Border.all(color: Colors.blue.shade300),
-                          ),
-                          child: Icon(
-                            Icons.visibility,
-                            size: 18,
-                            color: Colors.blue.shade600,
+                        trailing: SizedBox(
+                          width: 50, // Fixed: Set specific width to prevent overflow
+                          child: Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: Colors.blue.shade100,
+                              shape: BoxShape.circle,
+                              border: Border.all(color: Colors.blue.shade300),
+                            ),
+                            child: Icon(
+                              Icons.visibility,
+                              size: 18,
+                              color: Colors.blue.shade600,
+                            ),
                           ),
                         ),
                         onTap: () {
@@ -599,6 +623,7 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
           Expanded(
             child: ListView.builder(
               physics: const BouncingScrollPhysics(),
+              padding: const EdgeInsets.only(bottom: 20), // Fixed: Added bottom padding
               itemCount: _adoptedPets.length,
               itemBuilder: (context, index) {
                 return _buildPetCard(_adoptedPets[index], index);

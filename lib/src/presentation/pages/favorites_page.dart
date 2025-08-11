@@ -63,7 +63,8 @@ class _FavoritesPageState extends State<FavoritesPage> with TickerProviderStateM
               end: Offset.zero,
             ).animate(animation),
             child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              margin: const EdgeInsets.symmetric(
+                  horizontal: 16.0, vertical: 8.0),
               child: Card(
                 elevation: 12,
                 shadowColor: Colors.pink.withOpacity(0.3),
@@ -91,7 +92,8 @@ class _FavoritesPageState extends State<FavoritesPage> with TickerProviderStateM
                       end: Alignment.bottomRight,
                     ),
                     border: Border.all(
-                      color: pet.isAdopted ? Colors.grey.shade300 : Colors.pink.shade100,
+                      color: pet.isAdopted ? Colors.grey.shade300 : Colors.pink
+                          .shade100,
                       width: 2,
                     ),
                   ),
@@ -119,19 +121,20 @@ class _FavoritesPageState extends State<FavoritesPage> with TickerProviderStateM
                                 width: 80,
                                 height: 80,
                                 fit: BoxFit.cover,
-                                errorBuilder: (_, __, ___) => Container(
-                                  width: 80,
-                                  height: 80,
-                                  decoration: BoxDecoration(
-                                    color: Colors.pink.shade100,
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Icon(
-                                    Icons.pets,
-                                    size: 35,
-                                    color: Colors.pink.shade400,
-                                  ),
-                                ),
+                                errorBuilder: (_, __, ___) =>
+                                    Container(
+                                      width: 80,
+                                      height: 80,
+                                      decoration: BoxDecoration(
+                                        color: Colors.pink.shade100,
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      child: Icon(
+                                        Icons.pets,
+                                        size: 35,
+                                        color: Colors.pink.shade400,
+                                      ),
+                                    ),
                               ),
                             ),
                           ),
@@ -166,7 +169,8 @@ class _FavoritesPageState extends State<FavoritesPage> with TickerProviderStateM
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
-                        color: pet.isAdopted ? Colors.grey.shade600 : Colors.black87,
+                        color: pet.isAdopted ? Colors.grey.shade600 : Colors
+                            .black87,
                         letterSpacing: 0.5,
                       ),
                     ),
@@ -175,61 +179,68 @@ class _FavoritesPageState extends State<FavoritesPage> with TickerProviderStateM
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
+                          // Fixed: Use Flexible widgets to prevent overflow
+                          Wrap(
+                            spacing: 8,
+                            runSpacing: 8,
                             children: [
-                              Flexible(
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
-                                  decoration: BoxDecoration(
-                                    color: pet.isAdopted ? Colors.grey.shade300 : Colors.pink.shade100,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(
-                                        Icons.pets,
-                                        size: 12,
-                                        color: pet.isAdopted ? Colors.grey.shade600 : Colors.pink.shade700,
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: pet.isAdopted
+                                      ? Colors.grey.shade300
+                                      : Colors.pink.shade100,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      Icons.pets,
+                                      size: 14,
+                                      color: pet.isAdopted ? Colors.grey
+                                          .shade600 : Colors.pink.shade700,
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      pet.type,
+                                      style: TextStyle(
+                                        color: pet.isAdopted ? Colors.grey
+                                            .shade600 : Colors.pink.shade700,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 12,
                                       ),
-                                      const SizedBox(width: 3),
-                                      Flexible(
-                                        child: Text(
-                                          pet.type,
-                                          style: TextStyle(
-                                            color: pet.isAdopted ? Colors.grey.shade600 : Colors.pink.shade700,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 11,
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              const SizedBox(width: 6),
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 4),
                                 decoration: BoxDecoration(
-                                  color: pet.isAdopted ? Colors.grey.shade300 : Colors.blue.shade100,
-                                  borderRadius: BorderRadius.circular(10),
+                                  color: pet.isAdopted
+                                      ? Colors.grey.shade300
+                                      : Colors.blue.shade100,
+                                  borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Icon(
                                       Icons.cake,
-                                      size: 12,
-                                      color: pet.isAdopted ? Colors.grey.shade600 : Colors.blue.shade700,
+                                      size: 14,
+                                      color: pet.isAdopted ? Colors.grey
+                                          .shade600 : Colors.blue.shade700,
                                     ),
-                                    const SizedBox(width: 3),
+                                    const SizedBox(width: 4),
                                     Text(
-                                      '${pet.age}y',
+                                      '${pet.age} yrs',
                                       style: TextStyle(
-                                        color: pet.isAdopted ? Colors.grey.shade600 : Colors.blue.shade700,
+                                        color: pet.isAdopted ? Colors.grey
+                                            .shade600 : Colors.blue.shade700,
                                         fontWeight: FontWeight.w600,
-                                        fontSize: 11,
+                                        fontSize: 12,
                                       ),
                                     ),
                                   ],
@@ -238,77 +249,94 @@ class _FavoritesPageState extends State<FavoritesPage> with TickerProviderStateM
                             ],
                           ),
                           const SizedBox(height: 8),
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                            decoration: BoxDecoration(
-                              color: pet.isAdopted ? Colors.grey.shade300 : Colors.green.shade100,
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                color: pet.isAdopted ? Colors.grey.shade400 : Colors.green.shade300,
+                          // Fixed: Make price container flexible
+                          Row(
+                            children: [
+                              Flexible(
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12, vertical: 6),
+                                  decoration: BoxDecoration(
+                                    color: pet.isAdopted
+                                        ? Colors.grey.shade300
+                                        : Colors.green.shade100,
+                                    borderRadius: BorderRadius.circular(15),
+                                    border: Border.all(
+                                      color: pet.isAdopted ? Colors.grey
+                                          .shade400 : Colors.green.shade300,
+                                    ),
+                                  ),
+                                  child: Text(
+                                    '\$${pet.price.toStringAsFixed(2)}',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                      color: pet.isAdopted ? Colors.grey
+                                          .shade600 : Colors.green.shade700,
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
-                            child: Text(
-                              '\${pet.price.toStringAsFixed(2)}',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
-                                color: pet.isAdopted ? Colors.grey.shade600 : Colors.green.shade700,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                            ],
                           ),
                         ],
                       ),
                     ),
-                    trailing: pet.isAdopted
-                        ? Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      decoration: BoxDecoration(
-                        color: Colors.red.shade100,
-                        borderRadius: BorderRadius.circular(25),
-                        border: Border.all(color: Colors.red.shade300),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.check_circle,
-                            size: 16,
-                            color: Colors.red.shade700,
-                          ),
-                          const SizedBox(width: 6),
-                          Text(
-                            'Adopted',
-                            style: TextStyle(
+                    trailing: SizedBox(
+                      width: 80,
+                      // Fixed: Set specific width to prevent overflow
+                      child: pet.isAdopted
+                          ? Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: Colors.red.shade100,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: Colors.red.shade300),
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.check_circle,
+                              size: 16,
                               color: Colors.red.shade700,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12,
                             ),
-                          ),
-                        ],
-                      ),
-                    )
-                        : Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.pink.shade100,
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Colors.pink.shade300),
-                      ),
-                      child: Icon(
-                        Icons.arrow_forward_ios,
-                        size: 16,
-                        color: Colors.pink.shade600,
+                            const SizedBox(height: 2),
+                            Text(
+                              'Adopted',
+                              style: TextStyle(
+                                color: Colors.red.shade700,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 10,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                          : Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.pink.shade100,
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.pink.shade300),
+                        ),
+                        child: Icon(
+                          Icons.arrow_forward_ios,
+                          size: 16,
+                          color: Colors.pink.shade600,
+                        ),
                       ),
                     ),
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => DetailsPage(
-                            pet: pet,
-                            petRepository: widget.petRepository,
-                          ),
+                          builder: (_) =>
+                              DetailsPage(
+                                pet: pet,
+                                petRepository: widget.petRepository,
+                              ),
                         ),
                       ).then((_) => _loadFavoritePets());
                     },
@@ -351,7 +379,8 @@ class _FavoritesPageState extends State<FavoritesPage> with TickerProviderStateM
                   ],
                 ),
                 child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.pink.shade400),
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                      Colors.pink.shade400),
                   strokeWidth: 3,
                 ),
               ),
@@ -424,7 +453,8 @@ class _FavoritesPageState extends State<FavoritesPage> with TickerProviderStateM
               ),
               const SizedBox(height: 32),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 24, vertical: 12),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [Colors.pink.shade400, Colors.red.shade400],
@@ -511,7 +541,9 @@ class _FavoritesPageState extends State<FavoritesPage> with TickerProviderStateM
                         ),
                       ),
                       Text(
-                        '${_favoritePets.length} pet${_favoritePets.length != 1 ? 's' : ''} you love',
+                        '${_favoritePets.length} pet${_favoritePets.length != 1
+                            ? 's'
+                            : ''} you love',
                         style: TextStyle(
                           fontSize: 14,
                           color: Colors.grey.shade600,
@@ -526,6 +558,8 @@ class _FavoritesPageState extends State<FavoritesPage> with TickerProviderStateM
           Expanded(
             child: ListView.builder(
               physics: const BouncingScrollPhysics(),
+              padding: const EdgeInsets.only(bottom: 20),
+              // Fixed: Added bottom padding
               itemCount: _favoritePets.length,
               itemBuilder: (context, index) {
                 return _buildPetCard(_favoritePets[index], index);
