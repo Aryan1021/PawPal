@@ -3,6 +3,7 @@ import '../../data/repositories/pet_repository.dart';
 import 'home_page.dart';
 import 'favorites_page.dart';
 import 'history_page.dart';
+import '../widgets/theme_toggle_action.dart';
 
 class MainScreen extends StatefulWidget {
   final PetRepository petRepository;
@@ -24,19 +25,22 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
       'title': 'PawPal - Adopt a Pet',
       'icon': Icons.pets,
       'label': 'Home',
-      'gradient': [Color(0xFF667eea), Color(0xFF764ba2)],
+      'lightGradient': [Color(0xFF667eea), Color(0xFF764ba2)],
+      'darkGradient': [Color(0xFF4a90e2), Color(0xFF7b68ee)],
     },
     {
       'title': 'Your Favorite Pets',
       'icon': Icons.favorite,
       'label': 'Favorites',
-      'gradient': [Color(0xFFf093fb), Color(0xFFf5576c)],
+      'lightGradient': [Color(0xFFf093fb), Color(0xFFf5576c)],
+      'darkGradient': [Color(0xFFff6b9d), Color(0xFFc44569)],
     },
     {
       'title': 'Adoption History',
       'icon': Icons.history,
       'label': 'History',
-      'gradient': [Color(0xFF4facfe), Color(0xFF00f2fe)],
+      'lightGradient': [Color(0xFF4facfe), Color(0xFF00f2fe)],
+      'darkGradient': [Color(0xFF2196f3), Color(0xFF21cbf3)],
     }
   ];
 
@@ -74,6 +78,13 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final currentItem = _navigationItems[_currentIndex];
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
+    // Select appropriate gradient based on theme
+    final gradientColors = isDark
+        ? currentItem['darkGradient']
+        : currentItem['lightGradient'];
 
     return Scaffold(
       appBar: PreferredSize(
@@ -81,13 +92,13 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
         child: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: currentItem['gradient'],
+              colors: gradientColors,
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black26,
+                color: isDark ? Colors.black54 : Colors.black26,
                 blurRadius: 10,
                 offset: Offset(0, 4),
               ),
@@ -132,16 +143,19 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                 ],
               ),
             ),
+            actions: const [
+              ThemeToggleAction(),
+            ],
           ),
         ),
       ),
       body: _pages[_currentIndex],
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: theme.bottomNavigationBarTheme.backgroundColor,
           boxShadow: [
             BoxShadow(
-              color: Colors.black12,
+              color: isDark ? Colors.black54 : Colors.black12,
               blurRadius: 20,
               offset: Offset(0, -5),
             ),
@@ -156,6 +170,9 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
               children: List.generate(_navigationItems.length, (index) {
                 final item = _navigationItems[index];
                 final isSelected = _currentIndex == index;
+                final itemGradient = isDark
+                    ? item['darkGradient']
+                    : item['lightGradient'];
 
                 return GestureDetector(
                   onTap: () => _onTap(index),
@@ -165,7 +182,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                     decoration: BoxDecoration(
                       gradient: isSelected
                           ? LinearGradient(
-                        colors: item['gradient'],
+                        colors: itemGradient,
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       )
@@ -174,7 +191,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                       boxShadow: isSelected
                           ? [
                         BoxShadow(
-                          color: item['gradient'][0].withOpacity(0.3),
+                          color: itemGradient[0].withOpacity(0.3),
                           blurRadius: 8,
                           offset: Offset(0, 3),
                         ),
@@ -186,7 +203,9 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                       children: [
                         Icon(
                           item['icon'],
-                          color: isSelected ? Colors.white : Colors.grey.shade600,
+                          color: isSelected
+                              ? Colors.white
+                              : theme.bottomNavigationBarTheme.unselectedItemColor,
                           size: 24,
                         ),
                         if (isSelected) ...[

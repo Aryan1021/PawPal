@@ -50,6 +50,14 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
   }
 
   Widget _buildPetCard(Pet pet, int index) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
+    // Enhanced theme colors
+    final cardColor = isDark ? theme.cardColor : Colors.white;
+    final shadowColor = isDark ? Colors.black54 : Colors.blue.withOpacity(0.15);
+    final borderColor = isDark ? Colors.blue.shade700 : Colors.blue.shade200;
+
     return AnimatedBuilder(
       animation: _animationController,
       builder: (context, child) {
@@ -72,16 +80,23 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               child: Card(
-                elevation: 15,
-                shadowColor: Colors.blue.withOpacity(0.3),
+                elevation: isDark ? 8 : 15,
+                shadowColor: shadowColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(25),
                 ),
+                color: cardColor,
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(25),
                     gradient: LinearGradient(
-                      colors: [
+                      colors: isDark
+                          ? [
+                        theme.cardColor,
+                        theme.cardColor.withOpacity(0.95),
+                        theme.cardColor.withOpacity(0.9)
+                      ]
+                          : [
                         Colors.blue.shade50,
                         Colors.white,
                         Colors.cyan.shade50,
@@ -91,12 +106,13 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                       end: Alignment.bottomRight,
                     ),
                     border: Border.all(
-                      color: Colors.blue.shade100,
-                      width: 2,
+                      color: borderColor,
+                      width: isDark ? 1 : 2,
                     ),
                   ),
                   child: Stack(
                     children: [
+                      // Background decoration
                       Positioned(
                         top: -20,
                         right: -20,
@@ -104,11 +120,14 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                           width: 80,
                           height: 80,
                           decoration: BoxDecoration(
-                            color: Colors.blue.withOpacity(0.1),
+                            color: isDark
+                                ? Colors.blue.withOpacity(0.08)
+                                : Colors.blue.withOpacity(0.1),
                             shape: BoxShape.circle,
                           ),
                         ),
                       ),
+
                       ListTile(
                         contentPadding: const EdgeInsets.all(20),
                         leading: Stack(
@@ -118,7 +137,7 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                                 borderRadius: BorderRadius.circular(20),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.blue.withOpacity(0.2),
+                                    color: shadowColor,
                                     blurRadius: 12,
                                     offset: Offset(3, 6),
                                   ),
@@ -137,13 +156,17 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                                       width: 80,
                                       height: 80,
                                       decoration: BoxDecoration(
-                                        color: Colors.blue.shade100,
+                                        color: isDark
+                                            ? Colors.grey.shade700
+                                            : Colors.blue.shade100,
                                         borderRadius: BorderRadius.circular(20),
                                       ),
                                       child: Icon(
                                         Icons.pets,
                                         size: 35,
-                                        color: Colors.blue.shade400,
+                                        color: isDark
+                                            ? Colors.grey.shade400
+                                            : Colors.blue.shade400,
                                       ),
                                     ),
                                   ),
@@ -178,16 +201,15 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                         title: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Fixed: Use flexible layout for title and adopted badge
                             Row(
                               children: [
                                 Expanded(
                                   child: Text(
                                     pet.name,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20,
-                                      color: Colors.black87,
+                                      color: theme.textTheme.titleLarge?.color,
                                       letterSpacing: 0.5,
                                     ),
                                     overflow: TextOverflow.ellipsis,
@@ -197,9 +219,15 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                                 Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                   decoration: BoxDecoration(
-                                    color: Colors.green.shade100,
+                                    color: isDark
+                                        ? Colors.green.shade800
+                                        : Colors.green.shade100,
                                     borderRadius: BorderRadius.circular(15),
-                                    border: Border.all(color: Colors.green.shade300),
+                                    border: Border.all(
+                                        color: isDark
+                                            ? Colors.green.shade600
+                                            : Colors.green.shade300
+                                    ),
                                   ),
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
@@ -207,13 +235,17 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                                       Icon(
                                         Icons.home,
                                         size: 12,
-                                        color: Colors.green.shade700,
+                                        color: isDark
+                                            ? Colors.green.shade300
+                                            : Colors.green.shade700,
                                       ),
                                       const SizedBox(width: 4),
                                       Text(
                                         'Adopted',
                                         style: TextStyle(
-                                          color: Colors.green.shade700,
+                                          color: isDark
+                                              ? Colors.green.shade300
+                                              : Colors.green.shade700,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 10,
                                         ),
@@ -230,7 +262,6 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // Fixed: Use Wrap instead of Row to prevent overflow
                               Wrap(
                                 spacing: 8,
                                 runSpacing: 8,
@@ -238,9 +269,15 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                                   Container(
                                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                     decoration: BoxDecoration(
-                                      color: Colors.blue.shade100,
+                                      color: isDark
+                                          ? Colors.blue.shade800
+                                          : Colors.blue.shade100,
                                       borderRadius: BorderRadius.circular(12),
-                                      border: Border.all(color: Colors.blue.shade200),
+                                      border: Border.all(
+                                          color: isDark
+                                              ? Colors.blue.shade600
+                                              : Colors.blue.shade200
+                                      ),
                                     ),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.min,
@@ -248,13 +285,17 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                                         Icon(
                                           Icons.pets,
                                           size: 14,
-                                          color: Colors.blue.shade700,
+                                          color: isDark
+                                              ? Colors.blue.shade300
+                                              : Colors.blue.shade700,
                                         ),
                                         const SizedBox(width: 4),
                                         Text(
                                           pet.type,
                                           style: TextStyle(
-                                            color: Colors.blue.shade700,
+                                            color: isDark
+                                                ? Colors.blue.shade300
+                                                : Colors.blue.shade700,
                                             fontWeight: FontWeight.w600,
                                             fontSize: 12,
                                           ),
@@ -265,9 +306,15 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                                   Container(
                                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                     decoration: BoxDecoration(
-                                      color: Colors.orange.shade100,
+                                      color: isDark
+                                          ? Colors.orange.shade800
+                                          : Colors.orange.shade100,
                                       borderRadius: BorderRadius.circular(12),
-                                      border: Border.all(color: Colors.orange.shade200),
+                                      border: Border.all(
+                                          color: isDark
+                                              ? Colors.orange.shade600
+                                              : Colors.orange.shade200
+                                      ),
                                     ),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.min,
@@ -275,13 +322,17 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                                         Icon(
                                           Icons.cake,
                                           size: 14,
-                                          color: Colors.orange.shade700,
+                                          color: isDark
+                                              ? Colors.orange.shade300
+                                              : Colors.orange.shade700,
                                         ),
                                         const SizedBox(width: 4),
                                         Text(
                                           '${pet.age} yrs',
                                           style: TextStyle(
-                                            color: Colors.orange.shade700,
+                                            color: isDark
+                                                ? Colors.orange.shade300
+                                                : Colors.orange.shade700,
                                             fontWeight: FontWeight.w600,
                                             fontSize: 12,
                                           ),
@@ -292,7 +343,6 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                                 ],
                               ),
                               const SizedBox(height: 12),
-                              // Fixed: Make price section flexible to prevent overflow
                               Row(
                                 children: [
                                   Flexible(
@@ -300,10 +350,16 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                                       decoration: BoxDecoration(
                                         gradient: LinearGradient(
-                                          colors: [Colors.purple.shade100, Colors.blue.shade100],
+                                          colors: isDark
+                                              ? [Colors.purple.shade800, Colors.blue.shade800]
+                                              : [Colors.purple.shade100, Colors.blue.shade100],
                                         ),
                                         borderRadius: BorderRadius.circular(15),
-                                        border: Border.all(color: Colors.purple.shade200),
+                                        border: Border.all(
+                                            color: isDark
+                                                ? Colors.purple.shade600
+                                                : Colors.purple.shade200
+                                        ),
                                       ),
                                       child: Row(
                                         mainAxisSize: MainAxisSize.min,
@@ -311,7 +367,9 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                                           Icon(
                                             Icons.attach_money,
                                             size: 16,
-                                            color: Colors.purple.shade700,
+                                            color: isDark
+                                                ? Colors.purple.shade300
+                                                : Colors.purple.shade700,
                                           ),
                                           const SizedBox(width: 4),
                                           Flexible(
@@ -320,7 +378,9 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                                               style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 12,
-                                                color: Colors.purple.shade700,
+                                                color: isDark
+                                                    ? Colors.purple.shade300
+                                                    : Colors.purple.shade700,
                                               ),
                                               overflow: TextOverflow.ellipsis,
                                             ),
@@ -335,18 +395,26 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                           ),
                         ),
                         trailing: SizedBox(
-                          width: 50, // Fixed: Set specific width to prevent overflow
+                          width: 50,
                           child: Container(
                             padding: const EdgeInsets.all(12),
                             decoration: BoxDecoration(
-                              color: Colors.blue.shade100,
+                              color: isDark
+                                  ? Colors.blue.shade800
+                                  : Colors.blue.shade100,
                               shape: BoxShape.circle,
-                              border: Border.all(color: Colors.blue.shade300),
+                              border: Border.all(
+                                  color: isDark
+                                      ? Colors.blue.shade600
+                                      : Colors.blue.shade300
+                              ),
                             ),
                             child: Icon(
                               Icons.visibility,
                               size: 18,
-                              color: Colors.blue.shade600,
+                              color: isDark
+                                  ? Colors.blue.shade300
+                                  : Colors.blue.shade600,
                             ),
                           ),
                         ),
@@ -374,6 +442,9 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
   }
 
   Widget _buildHeader() {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return AnimatedBuilder(
       animation: _headerAnimationController,
       builder: (context, child) {
@@ -392,18 +463,34 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
               margin: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [Colors.blue.shade400, Colors.cyan.shade300],
+                  colors: isDark
+                      ? [
+                    Colors.blue.shade800,
+                    Colors.cyan.shade700,
+                    Colors.blue.shade900,
+                  ]
+                      : [
+                    Colors.blue.shade400,
+                    Colors.cyan.shade300,
+                    Colors.blue.shade500,
+                  ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 borderRadius: BorderRadius.circular(25),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.blue.withOpacity(0.3),
+                    color: isDark
+                        ? Colors.black54
+                        : Colors.blue.withOpacity(0.3),
                     blurRadius: 15,
                     offset: Offset(0, 8),
                   ),
                 ],
+                border: isDark ? Border.all(
+                  color: Colors.blue.shade600.withOpacity(0.5),
+                  width: 1,
+                ) : null,
               ),
               child: Row(
                 children: [
@@ -437,7 +524,7 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                           '${_adoptedPets.length} pet${_adoptedPets.length != 1 ? 's' : ''} found loving homes',
                           style: TextStyle(
                             fontSize: 14,
-                            color: Colors.white70,
+                            color: Colors.white.withOpacity(0.9),
                           ),
                         ),
                       ],
@@ -469,11 +556,24 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     if (_isLoading) {
       return Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.blue.shade50, Colors.cyan.shade50],
+            colors: isDark
+                ? [
+              theme.scaffoldBackgroundColor,
+              Colors.grey.shade900,
+              Colors.grey.shade800,
+            ]
+                : [
+              Colors.blue.shade50,
+              Colors.cyan.shade50,
+              Colors.white,
+            ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -485,18 +585,22 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: theme.cardColor,
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.blue.withOpacity(0.3),
+                      color: isDark
+                          ? Colors.black54
+                          : Colors.blue.withOpacity(0.3),
                       blurRadius: 20,
                       spreadRadius: 5,
                     ),
                   ],
                 ),
                 child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.blue.shade400),
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                      isDark ? Colors.blue.shade300 : Colors.blue.shade400
+                  ),
                   strokeWidth: 3,
                 ),
               ),
@@ -505,7 +609,7 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                 'Loading adoption history...',
                 style: TextStyle(
                   fontSize: 16,
-                  color: Colors.grey.shade700,
+                  color: theme.textTheme.bodyMedium?.color,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -519,7 +623,17 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
       return Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.blue.shade50, Colors.cyan.shade50],
+            colors: isDark
+                ? [
+              theme.scaffoldBackgroundColor,
+              Colors.grey.shade900,
+              Colors.grey.shade800,
+            ]
+                : [
+              Colors.blue.shade50,
+              Colors.cyan.shade50,
+              Colors.white,
+            ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -531,11 +645,13 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
               Container(
                 padding: const EdgeInsets.all(40),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: theme.cardColor,
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.blue.withOpacity(0.2),
+                      color: isDark
+                          ? Colors.black54
+                          : Colors.blue.withOpacity(0.2),
                       blurRadius: 20,
                       spreadRadius: 5,
                     ),
@@ -544,7 +660,7 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                 child: Icon(
                   Icons.history,
                   size: 80,
-                  color: Colors.blue.shade300,
+                  color: isDark ? Colors.blue.shade400 : Colors.blue.shade300,
                 ),
               ),
               const SizedBox(height: 32),
@@ -553,7 +669,7 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Colors.grey.shade700,
+                  color: theme.textTheme.titleLarge?.color,
                   letterSpacing: 0.5,
                 ),
               ),
@@ -563,7 +679,7 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 16,
-                  color: Colors.grey.shade500,
+                  color: theme.textTheme.bodyMedium?.color,
                   height: 1.5,
                 ),
               ),
@@ -572,7 +688,9 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [Colors.blue.shade400, Colors.cyan.shade400],
+                    colors: isDark
+                        ? [Colors.blue.shade700, Colors.cyan.shade700]
+                        : [Colors.blue.shade400, Colors.cyan.shade400],
                   ),
                   borderRadius: BorderRadius.circular(25),
                   boxShadow: [
@@ -612,7 +730,17 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [Colors.blue.shade50, Colors.cyan.shade50],
+          colors: isDark
+              ? [
+            theme.scaffoldBackgroundColor,
+            Colors.grey.shade900,
+            Colors.grey.shade800,
+          ]
+              : [
+            Colors.blue.shade50,
+            Colors.cyan.shade50,
+            Colors.white,
+          ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -623,7 +751,7 @@ class _HistoryPageState extends State<HistoryPage> with TickerProviderStateMixin
           Expanded(
             child: ListView.builder(
               physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.only(bottom: 20), // Fixed: Added bottom padding
+              padding: const EdgeInsets.only(bottom: 20),
               itemCount: _adoptedPets.length,
               itemBuilder: (context, index) {
                 return _buildPetCard(_adoptedPets[index], index);

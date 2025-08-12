@@ -54,6 +54,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildPetCard(Pet pet) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -70,23 +73,29 @@ class _HomePageState extends State<HomePage> {
         margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6.0),
         child: Card(
           elevation: 8,
-          shadowColor: Colors.black26,
+          shadowColor: isDark ? Colors.black54 : Colors.black26,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-          color: pet.isAdopted ? Colors.grey.shade100 : Colors.white,
+          color: pet.isAdopted
+              ? (isDark ? theme.cardColor.withOpacity(0.7) : Colors.grey.shade100)
+              : theme.cardColor,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(20),
             child: Container(
               decoration: BoxDecoration(
                 gradient: pet.isAdopted
                     ? LinearGradient(
-                  colors: [Colors.grey.shade200, Colors.grey.shade100],
+                  colors: isDark
+                      ? [Colors.grey.shade800, Colors.grey.shade700]
+                      : [Colors.grey.shade200, Colors.grey.shade100],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 )
                     : LinearGradient(
-                  colors: [Colors.white, Colors.grey.shade50],
+                  colors: isDark
+                      ? [theme.cardColor, theme.cardColor.withOpacity(0.9)]
+                      : [Colors.white, Colors.grey.shade50],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
@@ -102,7 +111,7 @@ class _HomePageState extends State<HomePage> {
                           borderRadius: BorderRadius.circular(15),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black12,
+                              color: isDark ? Colors.black54 : Colors.black12,
                               blurRadius: 8,
                               offset: Offset(2, 4),
                             ),
@@ -121,13 +130,13 @@ class _HomePageState extends State<HomePage> {
                                 width: 60,
                                 height: 60,
                                 decoration: BoxDecoration(
-                                  color: Colors.grey.shade300,
+                                  color: isDark ? Colors.grey.shade700 : Colors.grey.shade300,
                                   borderRadius: BorderRadius.circular(15),
                                 ),
                                 child: Icon(
                                   Icons.pets,
                                   size: 25,
-                                  color: Colors.grey.shade600,
+                                  color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
                                 ),
                               ),
                             ),
@@ -146,21 +155,25 @@ class _HomePageState extends State<HomePage> {
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
                                 color: pet.isAdopted
-                                    ? Colors.grey.shade600
-                                    : Colors.black87,
+                                    ? (isDark ? Colors.grey.shade400 : Colors.grey.shade600)
+                                    : theme.textTheme.headlineMedium?.color,
                               ),
                               overflow: TextOverflow.ellipsis,
                             ),
                             const SizedBox(height: 4),
                             Row(
                               children: [
-                                Icon(Icons.pets, size: 14, color: Colors.grey.shade600),
+                                Icon(
+                                    Icons.pets,
+                                    size: 14,
+                                    color: isDark ? Colors.grey.shade400 : Colors.grey.shade600
+                                ),
                                 const SizedBox(width: 4),
                                 Flexible(
                                   child: Text(
                                     pet.type,
                                     style: TextStyle(
-                                      color: Colors.grey.shade700,
+                                      color: isDark ? Colors.grey.shade300 : Colors.grey.shade700,
                                       fontWeight: FontWeight.w500,
                                       fontSize: 12,
                                     ),
@@ -168,12 +181,16 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 ),
                                 const SizedBox(width: 8),
-                                Icon(Icons.cake, size: 14, color: Colors.grey.shade600),
+                                Icon(
+                                    Icons.cake,
+                                    size: 14,
+                                    color: isDark ? Colors.grey.shade400 : Colors.grey.shade600
+                                ),
                                 const SizedBox(width: 4),
                                 Text(
                                   '${pet.age} yrs',
                                   style: TextStyle(
-                                    color: Colors.grey.shade700,
+                                    color: isDark ? Colors.grey.shade300 : Colors.grey.shade700,
                                     fontWeight: FontWeight.w500,
                                     fontSize: 12,
                                   ),
@@ -185,13 +202,13 @@ class _HomePageState extends State<HomePage> {
                               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                               decoration: BoxDecoration(
                                 color: pet.isAdopted
-                                    ? Colors.grey.shade300
-                                    : Colors.green.shade100,
+                                    ? (isDark ? Colors.grey.shade700 : Colors.grey.shade300)
+                                    : (isDark ? Colors.green.shade800 : Colors.green.shade100),
                                 borderRadius: BorderRadius.circular(20),
                                 border: Border.all(
                                   color: pet.isAdopted
-                                      ? Colors.grey.shade400
-                                      : Colors.green.shade300,
+                                      ? (isDark ? Colors.grey.shade500 : Colors.grey.shade400)
+                                      : (isDark ? Colors.green.shade600 : Colors.green.shade300),
                                 ),
                               ),
                               child: Row(
@@ -201,8 +218,8 @@ class _HomePageState extends State<HomePage> {
                                     Icons.attach_money,
                                     size: 14,
                                     color: pet.isAdopted
-                                        ? Colors.grey.shade600
-                                        : Colors.green.shade700,
+                                        ? (isDark ? Colors.grey.shade400 : Colors.grey.shade600)
+                                        : (isDark ? Colors.green.shade400 : Colors.green.shade700),
                                   ),
                                   const SizedBox(width: 2),
                                   Text(
@@ -211,8 +228,8 @@ class _HomePageState extends State<HomePage> {
                                       fontWeight: FontWeight.bold,
                                       fontSize: 12,
                                       color: pet.isAdopted
-                                          ? Colors.grey.shade600
-                                          : Colors.green.shade800,
+                                          ? (isDark ? Colors.grey.shade400 : Colors.grey.shade600)
+                                          : (isDark ? Colors.green.shade400 : Colors.green.shade800),
                                     ),
                                   ),
                                 ],
@@ -229,14 +246,16 @@ class _HomePageState extends State<HomePage> {
                             Container(
                               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                               decoration: BoxDecoration(
-                                color: Colors.red.shade50,
+                                color: isDark ? Colors.red.shade900 : Colors.red.shade50,
                                 borderRadius: BorderRadius.circular(12),
-                                border: Border.all(color: Colors.red.shade200),
+                                border: Border.all(
+                                    color: isDark ? Colors.red.shade700 : Colors.red.shade200
+                                ),
                               ),
                               child: Text(
                                 'Adopted',
                                 style: TextStyle(
-                                  color: Colors.red.shade700,
+                                  color: isDark ? Colors.red.shade300 : Colors.red.shade700,
                                   fontWeight: FontWeight.w600,
                                   fontSize: 9,
                                 ),
@@ -247,8 +266,8 @@ class _HomePageState extends State<HomePage> {
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               color: pet.isFavorite
-                                  ? Colors.red.shade50
-                                  : Colors.grey.shade100,
+                                  ? (isDark ? Colors.red.shade900 : Colors.red.shade50)
+                                  : (isDark ? Colors.grey.shade700 : Colors.grey.shade100),
                             ),
                             padding: const EdgeInsets.all(6),
                             child: Icon(
@@ -257,7 +276,7 @@ class _HomePageState extends State<HomePage> {
                                   : Icons.favorite_border,
                               color: pet.isFavorite
                                   ? Colors.red
-                                  : Colors.grey.shade600,
+                                  : (isDark ? Colors.grey.shade400 : Colors.grey.shade600),
                               size: 18,
                             ),
                           ),
@@ -276,11 +295,16 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     if (_isLoading) {
       return Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.blue.shade50, Colors.purple.shade50],
+            colors: isDark
+                ? [Colors.grey.shade900, Colors.grey.shade800]
+                : [Colors.blue.shade50, Colors.purple.shade50],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -293,18 +317,20 @@ class _HomePageState extends State<HomePage> {
                 Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: theme.cardColor,
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black12,
+                        color: isDark ? Colors.black54 : Colors.black12,
                         blurRadius: 20,
                         spreadRadius: 5,
                       ),
                     ],
                   ),
                   child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.blue.shade600),
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                        isDark ? Colors.blue.shade400 : Colors.blue.shade600
+                    ),
                     strokeWidth: 3,
                   ),
                 ),
@@ -313,7 +339,7 @@ class _HomePageState extends State<HomePage> {
                   'Loading adorable pets...',
                   style: TextStyle(
                     fontSize: 16,
-                    color: Colors.grey.shade700,
+                    color: theme.textTheme.bodyMedium?.color,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -325,24 +351,26 @@ class _HomePageState extends State<HomePage> {
     }
 
     return Container(
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.blue.shade50, Colors.purple.shade50],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: isDark
+              ? [Colors.grey.shade900, Colors.grey.shade800]
+              : [Colors.blue.shade50, Colors.purple.shade50],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
+      ),
       child: SafeArea(
         child: Column(
           children: [
             Container(
               margin: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: theme.cardColor,
                 borderRadius: BorderRadius.circular(25),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black12,
+                    color: isDark ? Colors.black54 : Colors.black12,
                     blurRadius: 15,
                     spreadRadius: 2,
                     offset: Offset(0, 5),
@@ -351,19 +379,23 @@ class _HomePageState extends State<HomePage> {
               ),
               child: TextField(
                 controller: _searchController,
+                style: TextStyle(color: theme.textTheme.bodyLarge?.color),
                 decoration: InputDecoration(
                   labelText: 'Search for your perfect companion...',
-                  labelStyle: TextStyle(color: Colors.grey.shade600),
+                  labelStyle: TextStyle(color: theme.textTheme.bodyMedium?.color),
                   prefixIcon: Container(
                     padding: const EdgeInsets.all(12),
                     child: Icon(
                       Icons.search,
-                      color: Colors.blue.shade600,
+                      color: isDark ? Colors.blue.shade400 : Colors.blue.shade600,
                     ),
                   ),
                   suffixIcon: _searchController.text.isNotEmpty
                       ? IconButton(
-                    icon: Icon(Icons.clear, color: Colors.grey.shade600),
+                    icon: Icon(
+                        Icons.clear,
+                        color: theme.textTheme.bodyMedium?.color
+                    ),
                     onPressed: () {
                       _searchController.clear();
                     },
@@ -374,7 +406,7 @@ class _HomePageState extends State<HomePage> {
                     borderSide: BorderSide.none,
                   ),
                   filled: true,
-                  fillColor: Colors.white,
+                  fillColor: theme.cardColor,
                   contentPadding:
                   const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                 ),
@@ -383,8 +415,8 @@ class _HomePageState extends State<HomePage> {
             Expanded(
               child: RefreshIndicator(
                 onRefresh: _refreshPets,
-                color: Colors.blue.shade600,
-                backgroundColor: Colors.white,
+                color: isDark ? Colors.blue.shade400 : Colors.blue.shade600,
+                backgroundColor: theme.cardColor,
                 child: _filteredPets.isEmpty
                     ? ListView(
                   physics: const AlwaysScrollableScrollPhysics(),
@@ -398,11 +430,11 @@ class _HomePageState extends State<HomePage> {
                           Container(
                             padding: const EdgeInsets.all(40),
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: theme.cardColor,
                               shape: BoxShape.circle,
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black12,
+                                  color: isDark ? Colors.black54 : Colors.black12,
                                   blurRadius: 20,
                                   spreadRadius: 5,
                                 ),
@@ -411,7 +443,7 @@ class _HomePageState extends State<HomePage> {
                             child: Icon(
                               Icons.pets,
                               size: 60,
-                              color: Colors.grey.shade400,
+                              color: theme.textTheme.bodyMedium?.color,
                             ),
                           ),
                           const SizedBox(height: 24),
@@ -420,7 +452,7 @@ class _HomePageState extends State<HomePage> {
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
-                              color: Colors.grey.shade600,
+                              color: theme.textTheme.headlineMedium?.color,
                             ),
                           ),
                           const SizedBox(height: 8),
@@ -428,7 +460,7 @@ class _HomePageState extends State<HomePage> {
                             'Try adjusting your search terms',
                             style: TextStyle(
                               fontSize: 14,
-                              color: Colors.grey.shade500,
+                              color: theme.textTheme.bodyMedium?.color,
                             ),
                           ),
                         ],

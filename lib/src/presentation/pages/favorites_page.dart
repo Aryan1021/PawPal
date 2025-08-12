@@ -43,6 +43,9 @@ class _FavoritesPageState extends State<FavoritesPage> with TickerProviderStateM
   }
 
   Widget _buildPetCard(Pet pet, int index) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return AnimatedBuilder(
       animation: _animationController,
       builder: (context, child) {
@@ -67,22 +70,28 @@ class _FavoritesPageState extends State<FavoritesPage> with TickerProviderStateM
                   horizontal: 16.0, vertical: 8.0),
               child: Card(
                 elevation: 12,
-                shadowColor: Colors.pink.withOpacity(0.3),
+                shadowColor: isDark ? Colors.black54 : Colors.pink.withOpacity(0.3),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(25),
                 ),
-                color: pet.isAdopted ? Colors.grey.shade100 : Colors.white,
+                color: pet.isAdopted
+                    ? (isDark ? theme.cardColor.withOpacity(0.7) : Colors.grey.shade100)
+                    : theme.cardColor,
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(25),
                     gradient: pet.isAdopted
                         ? LinearGradient(
-                      colors: [Colors.grey.shade200, Colors.grey.shade100],
+                      colors: isDark
+                          ? [Colors.grey.shade800, Colors.grey.shade700]
+                          : [Colors.grey.shade200, Colors.grey.shade100],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     )
                         : LinearGradient(
-                      colors: [
+                      colors: isDark
+                          ? [theme.cardColor, theme.cardColor.withOpacity(0.9)]
+                          : [
                         Colors.pink.shade50,
                         Colors.white,
                         Colors.red.shade50,
@@ -92,8 +101,9 @@ class _FavoritesPageState extends State<FavoritesPage> with TickerProviderStateM
                       end: Alignment.bottomRight,
                     ),
                     border: Border.all(
-                      color: pet.isAdopted ? Colors.grey.shade300 : Colors.pink
-                          .shade100,
+                      color: pet.isAdopted
+                          ? (isDark ? Colors.grey.shade600 : Colors.grey.shade300)
+                          : (isDark ? Colors.pink.shade800 : Colors.pink.shade100),
                       width: 2,
                     ),
                   ),
@@ -106,7 +116,9 @@ class _FavoritesPageState extends State<FavoritesPage> with TickerProviderStateM
                             borderRadius: BorderRadius.circular(20),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.pink.withOpacity(0.2),
+                                color: isDark
+                                    ? Colors.black54
+                                    : Colors.pink.withOpacity(0.2),
                                 blurRadius: 10,
                                 offset: Offset(3, 6),
                               ),
@@ -126,13 +138,17 @@ class _FavoritesPageState extends State<FavoritesPage> with TickerProviderStateM
                                       width: 80,
                                       height: 80,
                                       decoration: BoxDecoration(
-                                        color: Colors.pink.shade100,
+                                        color: isDark
+                                            ? Colors.grey.shade700
+                                            : Colors.pink.shade100,
                                         borderRadius: BorderRadius.circular(20),
                                       ),
                                       child: Icon(
                                         Icons.pets,
                                         size: 35,
-                                        color: Colors.pink.shade400,
+                                        color: isDark
+                                            ? Colors.grey.shade400
+                                            : Colors.pink.shade400,
                                       ),
                                     ),
                               ),
@@ -169,8 +185,9 @@ class _FavoritesPageState extends State<FavoritesPage> with TickerProviderStateM
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
-                        color: pet.isAdopted ? Colors.grey.shade600 : Colors
-                            .black87,
+                        color: pet.isAdopted
+                            ? (isDark ? Colors.grey.shade400 : Colors.grey.shade600)
+                            : theme.textTheme.headlineMedium?.color,
                         letterSpacing: 0.5,
                       ),
                     ),
@@ -189,8 +206,8 @@ class _FavoritesPageState extends State<FavoritesPage> with TickerProviderStateM
                                     horizontal: 8, vertical: 4),
                                 decoration: BoxDecoration(
                                   color: pet.isAdopted
-                                      ? Colors.grey.shade300
-                                      : Colors.pink.shade100,
+                                      ? (isDark ? Colors.grey.shade700 : Colors.grey.shade300)
+                                      : (isDark ? Colors.pink.shade800 : Colors.pink.shade100),
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: Row(
@@ -199,15 +216,17 @@ class _FavoritesPageState extends State<FavoritesPage> with TickerProviderStateM
                                     Icon(
                                       Icons.pets,
                                       size: 14,
-                                      color: pet.isAdopted ? Colors.grey
-                                          .shade600 : Colors.pink.shade700,
+                                      color: pet.isAdopted
+                                          ? (isDark ? Colors.grey.shade400 : Colors.grey.shade600)
+                                          : (isDark ? Colors.pink.shade300 : Colors.pink.shade700),
                                     ),
                                     const SizedBox(width: 4),
                                     Text(
                                       pet.type,
                                       style: TextStyle(
-                                        color: pet.isAdopted ? Colors.grey
-                                            .shade600 : Colors.pink.shade700,
+                                        color: pet.isAdopted
+                                            ? (isDark ? Colors.grey.shade400 : Colors.grey.shade600)
+                                            : (isDark ? Colors.pink.shade300 : Colors.pink.shade700),
                                         fontWeight: FontWeight.w600,
                                         fontSize: 12,
                                       ),
@@ -220,8 +239,8 @@ class _FavoritesPageState extends State<FavoritesPage> with TickerProviderStateM
                                     horizontal: 8, vertical: 4),
                                 decoration: BoxDecoration(
                                   color: pet.isAdopted
-                                      ? Colors.grey.shade300
-                                      : Colors.blue.shade100,
+                                      ? (isDark ? Colors.grey.shade700 : Colors.grey.shade300)
+                                      : (isDark ? Colors.blue.shade800 : Colors.blue.shade100),
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: Row(
@@ -230,15 +249,17 @@ class _FavoritesPageState extends State<FavoritesPage> with TickerProviderStateM
                                     Icon(
                                       Icons.cake,
                                       size: 14,
-                                      color: pet.isAdopted ? Colors.grey
-                                          .shade600 : Colors.blue.shade700,
+                                      color: pet.isAdopted
+                                          ? (isDark ? Colors.grey.shade400 : Colors.grey.shade600)
+                                          : (isDark ? Colors.blue.shade300 : Colors.blue.shade700),
                                     ),
                                     const SizedBox(width: 4),
                                     Text(
                                       '${pet.age} yrs',
                                       style: TextStyle(
-                                        color: pet.isAdopted ? Colors.grey
-                                            .shade600 : Colors.blue.shade700,
+                                        color: pet.isAdopted
+                                            ? (isDark ? Colors.grey.shade400 : Colors.grey.shade600)
+                                            : (isDark ? Colors.blue.shade300 : Colors.blue.shade700),
                                         fontWeight: FontWeight.w600,
                                         fontSize: 12,
                                       ),
@@ -258,12 +279,13 @@ class _FavoritesPageState extends State<FavoritesPage> with TickerProviderStateM
                                       horizontal: 12, vertical: 6),
                                   decoration: BoxDecoration(
                                     color: pet.isAdopted
-                                        ? Colors.grey.shade300
-                                        : Colors.green.shade100,
+                                        ? (isDark ? Colors.grey.shade700 : Colors.grey.shade300)
+                                        : (isDark ? Colors.green.shade800 : Colors.green.shade100),
                                     borderRadius: BorderRadius.circular(15),
                                     border: Border.all(
-                                      color: pet.isAdopted ? Colors.grey
-                                          .shade400 : Colors.green.shade300,
+                                      color: pet.isAdopted
+                                          ? (isDark ? Colors.grey.shade500 : Colors.grey.shade400)
+                                          : (isDark ? Colors.green.shade600 : Colors.green.shade300),
                                     ),
                                   ),
                                   child: Text(
@@ -271,8 +293,9 @@ class _FavoritesPageState extends State<FavoritesPage> with TickerProviderStateM
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16,
-                                      color: pet.isAdopted ? Colors.grey
-                                          .shade600 : Colors.green.shade700,
+                                      color: pet.isAdopted
+                                          ? (isDark ? Colors.grey.shade400 : Colors.grey.shade600)
+                                          : (isDark ? Colors.green.shade300 : Colors.green.shade700),
                                     ),
                                   ),
                                 ),
@@ -290,9 +313,11 @@ class _FavoritesPageState extends State<FavoritesPage> with TickerProviderStateM
                         padding: const EdgeInsets.symmetric(
                             horizontal: 12, vertical: 8),
                         decoration: BoxDecoration(
-                          color: Colors.red.shade100,
+                          color: isDark ? Colors.red.shade900 : Colors.red.shade100,
                           borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: Colors.red.shade300),
+                          border: Border.all(
+                              color: isDark ? Colors.red.shade700 : Colors.red.shade300
+                          ),
                         ),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
@@ -300,13 +325,13 @@ class _FavoritesPageState extends State<FavoritesPage> with TickerProviderStateM
                             Icon(
                               Icons.check_circle,
                               size: 16,
-                              color: Colors.red.shade700,
+                              color: isDark ? Colors.red.shade300 : Colors.red.shade700,
                             ),
                             const SizedBox(height: 2),
                             Text(
                               'Adopted',
                               style: TextStyle(
-                                color: Colors.red.shade700,
+                                color: isDark ? Colors.red.shade300 : Colors.red.shade700,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 10,
                               ),
@@ -317,14 +342,16 @@ class _FavoritesPageState extends State<FavoritesPage> with TickerProviderStateM
                           : Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: Colors.pink.shade100,
+                          color: isDark ? Colors.pink.shade800 : Colors.pink.shade100,
                           shape: BoxShape.circle,
-                          border: Border.all(color: Colors.pink.shade300),
+                          border: Border.all(
+                              color: isDark ? Colors.pink.shade600 : Colors.pink.shade300
+                          ),
                         ),
                         child: Icon(
                           Icons.arrow_forward_ios,
                           size: 16,
-                          color: Colors.pink.shade600,
+                          color: isDark ? Colors.pink.shade300 : Colors.pink.shade600,
                         ),
                       ),
                     ),
@@ -352,11 +379,16 @@ class _FavoritesPageState extends State<FavoritesPage> with TickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     if (_isLoading) {
       return Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.pink.shade50, Colors.red.shade50],
+            colors: isDark
+                ? [Colors.grey.shade900, Colors.grey.shade800]
+                : [Colors.pink.shade50, Colors.red.shade50],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -368,11 +400,11 @@ class _FavoritesPageState extends State<FavoritesPage> with TickerProviderStateM
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: theme.cardColor,
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.pink.withOpacity(0.3),
+                      color: isDark ? Colors.black54 : Colors.pink.withOpacity(0.3),
                       blurRadius: 20,
                       spreadRadius: 5,
                     ),
@@ -380,7 +412,8 @@ class _FavoritesPageState extends State<FavoritesPage> with TickerProviderStateM
                 ),
                 child: CircularProgressIndicator(
                   valueColor: AlwaysStoppedAnimation<Color>(
-                      Colors.pink.shade400),
+                      isDark ? Colors.pink.shade300 : Colors.pink.shade400
+                  ),
                   strokeWidth: 3,
                 ),
               ),
@@ -389,7 +422,7 @@ class _FavoritesPageState extends State<FavoritesPage> with TickerProviderStateM
                 'Loading your favorites...',
                 style: TextStyle(
                   fontSize: 16,
-                  color: Colors.grey.shade700,
+                  color: theme.textTheme.bodyMedium?.color,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -403,7 +436,9 @@ class _FavoritesPageState extends State<FavoritesPage> with TickerProviderStateM
       return Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.pink.shade50, Colors.red.shade50],
+            colors: isDark
+                ? [Colors.grey.shade900, Colors.grey.shade800]
+                : [Colors.pink.shade50, Colors.red.shade50],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -415,11 +450,11 @@ class _FavoritesPageState extends State<FavoritesPage> with TickerProviderStateM
               Container(
                 padding: const EdgeInsets.all(40),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: theme.cardColor,
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.pink.withOpacity(0.2),
+                      color: isDark ? Colors.black54 : Colors.pink.withOpacity(0.2),
                       blurRadius: 20,
                       spreadRadius: 5,
                     ),
@@ -428,7 +463,7 @@ class _FavoritesPageState extends State<FavoritesPage> with TickerProviderStateM
                 child: Icon(
                   Icons.favorite_border,
                   size: 80,
-                  color: Colors.pink.shade300,
+                  color: isDark ? Colors.pink.shade400 : Colors.pink.shade300,
                 ),
               ),
               const SizedBox(height: 32),
@@ -437,7 +472,7 @@ class _FavoritesPageState extends State<FavoritesPage> with TickerProviderStateM
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Colors.grey.shade700,
+                  color: theme.textTheme.headlineMedium?.color,
                   letterSpacing: 0.5,
                 ),
               ),
@@ -447,7 +482,7 @@ class _FavoritesPageState extends State<FavoritesPage> with TickerProviderStateM
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 16,
-                  color: Colors.grey.shade500,
+                  color: theme.textTheme.bodyMedium?.color,
                   height: 1.5,
                 ),
               ),
@@ -457,7 +492,9 @@ class _FavoritesPageState extends State<FavoritesPage> with TickerProviderStateM
                     horizontal: 24, vertical: 12),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [Colors.pink.shade400, Colors.red.shade400],
+                    colors: isDark
+                        ? [Colors.pink.shade700, Colors.red.shade700]
+                        : [Colors.pink.shade400, Colors.red.shade400],
                   ),
                   borderRadius: BorderRadius.circular(25),
                   boxShadow: [
@@ -497,7 +534,9 @@ class _FavoritesPageState extends State<FavoritesPage> with TickerProviderStateM
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [Colors.pink.shade50, Colors.red.shade50],
+          colors: isDark
+              ? [Colors.grey.shade900, Colors.grey.shade800]
+              : [Colors.pink.shade50, Colors.red.shade50],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -511,11 +550,11 @@ class _FavoritesPageState extends State<FavoritesPage> with TickerProviderStateM
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: theme.cardColor,
                     borderRadius: BorderRadius.circular(15),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.pink.withOpacity(0.2),
+                        color: isDark ? Colors.black54 : Colors.pink.withOpacity(0.2),
                         blurRadius: 10,
                         offset: Offset(2, 4),
                       ),
@@ -537,7 +576,7 @@ class _FavoritesPageState extends State<FavoritesPage> with TickerProviderStateM
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: Colors.grey.shade800,
+                          color: theme.textTheme.headlineMedium?.color,
                         ),
                       ),
                       Text(
@@ -546,7 +585,7 @@ class _FavoritesPageState extends State<FavoritesPage> with TickerProviderStateM
                             : ''} you love',
                         style: TextStyle(
                           fontSize: 14,
-                          color: Colors.grey.shade600,
+                          color: theme.textTheme.bodyMedium?.color,
                         ),
                       ),
                     ],
